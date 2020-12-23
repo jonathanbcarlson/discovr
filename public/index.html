@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
   <head>
-    <title>Example of the Authorization Code flow with Spotify</title>
+    <title>Random Spotify Song</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
     <style type="text/css">
       #login, #loggedin {
@@ -30,7 +30,6 @@
         <button class="btn btn-default" id="obtain-new-token">Obtain new token using the refresh token</button>
       </div>
     </div>
-
     <script id="user-profile-template" type="text/x-handlebars-template">
       <h1>Logged in as {{display_name}}</h1>
       <div class="media">
@@ -61,6 +60,8 @@
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.1/handlebars.min.js"></script>
     <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script src="https://sdk.scdn.co/spotify-player.js"></script>
+    <script src="RandomSpotifyClient.js"></script>
     <script>
       (function() {
 
@@ -136,7 +137,81 @@
           }, false);
         }
       })();
+
+      // var player = '';
+
+      window.onSpotifyWebPlaybackSDKReady = () => {
+          const token = access_token;
+          // console.log('token is: ', token);
+          const player = new Spotify.Player({
+            name: 'Web Playback SDK Quick Start Player',
+            getOAuthToken: cb => { cb(token); }
+          });
+
+          // Error handling
+          player.addListener('initialization_error', ({ message }) => { console.error(message); });
+          player.addListener('authentication_error', ({ message }) => { console.error(message); });
+          player.addListener('account_error', ({ message }) => { console.error(message); });
+          player.addListener('playback_error', ({ message }) => { console.error(message); });
+
+          // Playback status updates
+          player.addListener('player_state_changed', state => { console.log(state); });
+
+          // Ready
+          player.addListener('ready', ({ device_id }) => {
+            console.log('Ready with Device ID', device_id);
+          });
+
+          // Not Ready
+          player.addListener('not_ready', ({ device_id }) => {
+            console.log('Device ID has gone offline', device_id);
+          });
+
+          // Connect to the player!
+          player.connect();
+
+        };
+
+
+      const play = ({
+        spotify_uri,
+        playerInstance: {
+          _options: {
+            getOAuthToken,
+            id
+          }
+        }
+      }) => {
+        getOAuthToken(access_token => {
+          fetch(`https://api.spotify.com/v1/me/player/play?device_id=${id}`, {
+            method: 'PUT',
+            body: JSON.stringify({ uris: [spotify_uri] }),
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${access_token}`
+            },
+          });
+        });
+      };
+
+      play({
+        playerInstance: new Spotify.Player({ name: 'Web Playback SDK Quick Start Player', getOAuthToken: cb => { cb(token); }}),
+        spotify_uri: 'spotify:track:7xGfFoTpQ2E7fRF5lN10tr',
+      });
+
+        // // Play a specified track on the Web Playback SDK's device ID
+        //   function play(device_id) {
+        //     $.ajax({
+        //       url: "https://api.spotify.com/v1/me/player/play?device_id=" + device_id,
+        //       type: "PUT",
+        //       data: '{"uris": ["spotify:track:5ya2gsaIhTkAuWYEMB0nw5"]}',
+        //       beforeSend: function (xhr) { xhr.setRequestHeader('Authorization', 'Bearer ' + access_token); },
+        //       success: function (data) {
+        //         console.log(data)
+        //       }
+        //     });
+        //   }
+        //   play(1);
     </script>
   </body>
 </html>
-
