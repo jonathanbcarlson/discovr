@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Spotify Web Playback SDK Template</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://sp-bootstrap.global.ssl.fastly.net/8.0.0/sp-bootstrap.min.css" rel="stylesheet" />
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+    integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+
+  <!-- Include the Web Playback SDK -->
+  <script src="https://sdk.scdn.co/spotify-player.js"></script>
+
+  <!-- Include our Javascript -->
+  <script src="/script.js" defer></script>
+  <script>
+    // Get the hash of the url
+      const hash = window.location.hash
+        .substring(1)
+        .split('&')
+        .reduce(function (initial, item) {
+          if (item) {
+            var parts = item.split('=');
+            initial[parts[0]] = decodeURIComponent(parts[1]);
+          }
+          return initial;
+        }, {});
+      window.location.hash = '';
+
+      // Set token
+      let _token = hash.access_token;
+
+      const authEndpoint = 'https://accounts.spotify.com/authorize';
+
+      // Replace with your app's client ID, redirect URI and desired scopes
+      const clientId = '2102d6bf57714410a8f50dd1ccadc571';
+      const redirectUri = 'https://spotify-web-playback.glitch.me';
+      const scopes = [
+        'streaming',
+        'user-read-birthdate',
+        'user-read-private',
+        'user-modify-playback-state'
+      ];
+
+      // If there is no token, redirect to Spotify authorization
+      if (!_token) {
+        window.location = `${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join('%20')}&response_type=token&show_dialog=true`;
+      }
+
+      // Set up the Web Playback SDK
+
+      window.onSpotifyPlayerAPIReady = () => {
+        const player = new Spotify.Player({
+          name: 'Web Playback SDK Template',
+          getOAuthToken: cb => { cb(_token); }
+        });
+
+        // Error handling
+        player.on('initialization_error', e => console.error(e));
+        player.on('authentication_error', e => console.error(e));
+        player.on('account_error', e => console.error(e));
+        player.on('playback_error', e => console.error(e));
+
+        // Playback status updates
+        player.on('player_state_changed', state => {
+          console.log(state)
+          $('#current-track').attr('src', state.track_window.current_track.album.images[0].url);
+          $('#current-track-name').text(state.track_window.current_track.name);
+        });
+
+        // Ready
+        player.on('ready', data => {
+          console.log('Ready with Device ID', data.device_id);
+
+          // Play a track using our new device ID
+          play(data.device_id);
+        });
+
+        // Connect to the player!
+        player.connect();
+      }
+  </script>
+</head>
+
+<body class="container">
+  <h1 class="text-salmon">Spotify Web Playback SDK Template</h1>
+  <h4>This app uses the implicit grant authorization flow to get an access token and initialise the Web Playback SDK. It
+    then uses the Spotify Connect Web API to play a song.</h4>
+  <p>If everything is set up properly, you should hear some music!</p>
+  <img id="current-track" />
+  <h3 id="current-track-name"></h3>
+  <a class="btn btn-salmon btn-lg" href="https://glitch.com/edit/#!/spotify-web-playback">Get started!</a>
+</body>
+
+</html>
