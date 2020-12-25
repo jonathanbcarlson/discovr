@@ -1,0 +1,23 @@
+{
+  "name": "random_search",
+  "version": "1.0.0",
+  "description": "Plays a random song from Spotify",
+  "main": "works/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jonathanbcarlson/bloom.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jonathanbcarlson/bloom/issues"
+  },
+  "homepage": "https://github.com/jonathanbcarlson/bloom#readme",
+  "dependencies": {
+    "jquery": "^3.5.1",
+    "jsdom": "^16.4.0"
+  }
+}
