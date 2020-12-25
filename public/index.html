@@ -65,6 +65,7 @@
   <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
   <script src="https://sdk.scdn.co/spotify-player.js"></script>
   <script src="../app.js" defer></script>
+  <script src="playURI.js" defer></script>
 
   <script>
     // Get the hash of the url
@@ -176,10 +177,10 @@
 
       // Set up the Web Playback SDK
 
-      window.onSpotifyPlayerAPIReady = () => {
+      window.onSpotifyWebPlaybackSDKReady = () => {
         const player = new Spotify.Player({
           name: 'Web Playback SDK Template',
-          getOAuthToken: cb => { cb(_token); }
+          getOAuthToken: cb => { cb(access_token); }
         });
 
         // Error handling
