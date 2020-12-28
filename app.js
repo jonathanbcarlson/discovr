@@ -31,12 +31,11 @@ global.document = document;
 
 var $ = jQuery = require('jquery')(window);
 
-
-// var client_id = '8c5ec548a1b54161a9dc2df93984bd46'; // Your client id
-var client_id = '2102d6bf57714410a8f50dd1ccadc571';
+var client_id = '8c5ec548a1b54161a9dc2df93984bd46'; // my client id
+// var client_id = '2102d6bf57714410a8f50dd1ccadc571';    // glitch client id
 var client_secret = '72fb5bf689c84b0f9e97174846847c37'; // Your secret
-// var redirect_uri = 'http://localhost:8888/callback'; // Your redirect uri
-var redirect_uri = 'https://spotify-web-playback.glitch.me';
+var redirect_uri = 'http://localhost:8888/callback'; // Your redirect uri
+// var redirect_uri = 'https://spotify-web-playback.glitch.me'; //glitch redirect_uri
 
 
 // var script = document.createElement('script');
