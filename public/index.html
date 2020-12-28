@@ -196,6 +196,18 @@
           $('#current-track-name').text(state.track_window.current_track.name);
         });
 
+        function play(device_id) {
+          $.ajax({
+            url: "https://api.spotify.com/v1/me/player/play?device_id=" + device_id,
+            type: "PUT",
+            data: '{"uris": ["spotify:track:5ya2gsaIhTkAuWYEMB0nw5"]}',
+            beforeSend: function (xhr) { xhr.setRequestHeader('Authorization', 'Bearer ' + _token); },
+            success: function (data) {
+              console.log(data)
+            }
+          });
+        }
+        
         // Ready
         player.on('ready', data => {
           console.log('Ready with Device ID', data.device_id);
