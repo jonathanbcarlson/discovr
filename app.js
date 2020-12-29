@@ -24,6 +24,7 @@ var cookieParser = require('cookie-parser');
 
 //use jsdom to use jquery
 var jsdom = require('jsdom');
+const { data } = require('jquery');
 const { JSDOM } = jsdom;
 const { window } = new JSDOM();
 const { document } = (new JSDOM('')).window;
@@ -32,11 +33,11 @@ global.document = document;
 var $ = jQuery = require('jquery')(window);
 
 
-// var client_id = '8c5ec548a1b54161a9dc2df93984bd46'; // Your client id
-var client_id = '2102d6bf57714410a8f50dd1ccadc571';
-var client_secret = '72fb5bf689c84b0f9e97174846847c37'; // Your secret
-// var redirect_uri = 'http://localhost:8888/callback'; // Your redirect uri
-var redirect_uri = 'https://spotify-web-playback.glitch.me';
+var client_id = '5529b65df7d4442baa0d95a5a9ddba16'; // Your client id
+//var client_id = '2102d6bf57714410a8f50dd1ccadc571'; //glitch id
+var client_secret = '24046d65305244b1af9884d5b139e493'; // Your secret
+var redirect_uri = 'http://localhost:8888/callback'; // Your redirect uri
+//var redirect_uri = 'https://spotify-web-playback.glitch.me';
 
 
 // var script = document.createElement('script');
@@ -204,13 +205,39 @@ app.get('/callback', function (req, res) {
     }
 });
 
+app.get('/playback', function (req, res) {
+    
+    console.log("We here now");
+
+    var authOptions = {
+        url: 'https://accounts.spotify.com/api/token',
+        headers: { 'Authorization': 'Basic ' + (new Buffer.from(client_id + ':' + client_secret).toString('base64')) },
+        form: {
+            grant_type: 'refresh_token',
+            refresh_token: refresh_token
+        },
+        json: true
+    };
+
+    request.post(authOptions, function (error, response, body) {
+        if (!error && response.statusCode === 200) {
+            var spotify_uri = body.uri;
+            console.log("Line 224 " + uri);
+            res.send({
+                'uri': spotify_uri
+            });
+            console.log("We here now 2");
+        }
+    });
+});
+
 app.get('/refresh_token', function (req, res) {
 
     // requesting access token from refresh token
     var refresh_token = req.query.refresh_token;
     var authOptions = {
         url: 'https://accounts.spotify.com/api/token',
-        headers: { 'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64')) },
+        headers: { 'Authorization': 'Basic ' + (new Buffer.from(client_id + ':' + client_secret).toString('base64')) },
         form: {
             grant_type: 'refresh_token',
             refresh_token: refresh_token
