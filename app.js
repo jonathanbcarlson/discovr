@@ -32,12 +32,20 @@ global.document = document;
 
 var $ = jQuery = require('jquery')(window);
 
+<<<<<<< HEAD
 
 var client_id = '5529b65df7d4442baa0d95a5a9ddba16'; // Your client id
 //var client_id = '2102d6bf57714410a8f50dd1ccadc571'; //glitch id
 var client_secret = '24046d65305244b1af9884d5b139e493'; // Your secret
 var redirect_uri = 'http://localhost:8888/callback'; // Your redirect uri
 //var redirect_uri = 'https://spotify-web-playback.glitch.me';
+=======
+var client_id = '8c5ec548a1b54161a9dc2df93984bd46'; // my client id
+// var client_id = '2102d6bf57714410a8f50dd1ccadc571';    // glitch client id
+var client_secret = '72fb5bf689c84b0f9e97174846847c37'; // Your secret
+var redirect_uri = 'http://localhost:8888/callback'; // Your redirect uri
+// var redirect_uri = 'https://spotify-web-playback.glitch.me'; //glitch redirect_uri
+>>>>>>> 4e480c123eab35e3493142553eccf59f967002c3
 
 
 // var script = document.createElement('script');

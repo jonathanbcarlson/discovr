@@ -426,8 +426,14 @@
           $.ajax({
             url: "https://api.spotify.com/v1/me/player/play?device_id=" + device_id,
             type: "PUT",
+<<<<<<< HEAD
             data: '{"uris": fetch("http://localhost:8888/playback")}',
             beforeSend: function (xhr) { xhr.setRequestHeader('Authorization', 'Bearer ' + access_token); },
+=======
+            // data: '{"uris": ["spotify:track:5ya2gsaIhTkAuWYEMB0nw5"]}',
+            data: '{"uris": ["spotify:track:3OaunNUlXXs5e2PXtNAzzG"]}',
+            beforeSend: function (xhr) { xhr.setRequestHeader('Authorization', 'Bearer ' + _token); },
+>>>>>>> 4e480c123eab35e3493142553eccf59f967002c3
             success: function (data) {
               console.log(data)
             }
