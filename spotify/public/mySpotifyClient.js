@@ -122,7 +122,7 @@ async function getRandomSong(){
         },
         // request.get(search, function (error, response, body) {
         //     // console.log(body);
-        //     console.log('track is: ', body.tracks.items[0].uri);
+        //console.log('track is: ', body.tracks.items[0].uri);
         //     spotify_uri = body.tracks.items[0].uri;
         //     console.log('error is: ', error);
         //     // console.log(response);
@@ -130,6 +130,17 @@ async function getRandomSong(){
     })
     var data = await response.json();
     var song = data.tracks.items[0].uri;
+
+    console.log(data);
+    $('#song-title').text(data.tracks.items[0].name);
+    $('#song-art').attr('src', data.tracks.items[0].album.images[0].url);
+    $('#song-artist').text(data.tracks.items[0].artists[0].name);
+    //var title = data.tracks.items[0].name;
+    //var art = data.tracks.items[0].album.images[0].url;
+    //var artist = data.tracks.items[0].artists[0].name;
+    //console.log(title);
+    //console.log(art);
+    //console.log(artist);
     return song;
     //.then(response => { response.json() })
     //    .then(data => { console.log(data) });
