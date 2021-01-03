@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Spotify Web Playback SDK Quick Start Tutorial</title>
+  <script src="https://sdk.scdn.co/spotify-player.js"> </script>
+  <script src="mySpotifyClient.js"></script>
+  <script>
+      var player;
+      function customOnLoad ()
+      {
+          var hash = document.location.hash;
+          hash = hash.replace("#","?");
+          var params = new URLSearchParams (hash);
+          access_token = params.get ("access_token")
+          if (access_token)
+          {
+            initializeSpotifyPlayer();
+            //playRandomSong();
+          }
+      }
+    window.onSpotifyWebPlaybackSDKReady = () => {
+      spotifyPlayerParams.sdkReady = true;
+      // console.log('onSpotitfyWebPlayer accessToken:'+accessToken);
+      // var accessToken = getAccessToken();
+      // console.log('onSpotitfyWebPlayer accessToken:'+accessToken);
+      // const token = 'BQDmO71DyIWuamBMxp6grtTZtaXMhLlU2HG-Tw-WfnL4xJXiLaWcJ40dFTaQzbhLu-o1ZGZHKgQBz_6yJEgsbbstDN9NAiFF6x1zKjCSCct80EymL5VoWdTwZL236EeSCL-O2QHF9d1KXjXvmjaanZ9cFmmS-RSCo0Ma';
+      // player = new Spotify.Player({
+      //   name: 'Web Playback SDK Quick Start Player',
+      //   getOAuthToken: cb => { cb(token); }
+      // });
+    
+      // // Error handling
+      // player.addListener('initialization_error', ({ message }) => { console.error(message); });
+      // player.addListener('authentication_error', ({ message }) => { console.error(message); });
+      // player.addListener('account_error', ({ message }) => { console.error(message); });
+      // player.addListener('playback_error', ({ message }) => { console.error(message); });
+    
+      // // Playback status updates
+      // player.addListener('player_state_changed', state => { console.log(state); });
+    
+      // // Ready
+      // player.addListener('ready', ({ device_id }) => {
+      //   console.log('Ready with Device ID', device_id);
+      // });
+    
+      // // Not Ready
+      // player.addListener('not_ready', ({ device_id }) => {
+      //   console.log('Device ID has gone offline', device_id);
+      // });
+    
+      // // Connect to the player!
+      // player.connect();
+    };
+    </script>
+</head>
+<body onload="customOnLoad();">
+  <h1>Spotify Web Playback SDK Quick Start Tutorial</h1>
+  <h2>Open your console log: <code>View > Developer > JavaScript Console</code></h2>
+  <form action="https://accounts.spotify.com/en/authorize" class="no-padding" id="get-access-token">
+    <input type="hidden" name="response_type" value="token" />
+    <input type="hidden" name="client_id" value="8c5ec548a1b54161a9dc2df93984bd46" />
+    <input type="hidden" name="redirect_uri" value="http://localhost:8888/"/>
+    <input type="hidden" name="scope" value="streaming user-read-email user-modify-playback-state user-read-private" />
+    <input type="hidden" name="show_dialog" value="true" />
+  
+    <button type="submit" class="btn btn-primary btn-sm">Approve Spotify Playing Songs</button>
+  </form>
+ <!--<button type="button" onclick="play({
+    playerInstance: player,
+    spotify_uri: 'spotify:track:7xGfFoTpQ2E7fRF5lN10tr'
+  });">Listen to Spotify</button>
+
+  <button type="button" onclick="playSafe('spotify:track:7xGfFoTpQ2E7fRF5lN10tr')">Play Safe Song</button>-->
+  <button type="button" onclick="playRandomSong()">Play Random Song</button>
+
+
+
+<!-- <form action="https://accounts.spotify.com/en/authorize" class="no-padding" id="get-access-token">
+  <input type="hidden" name="response_type" value="token" />
+  <input type="hidden" name="client_id" value="4934dfba9b1f4124918b14b0c038088a" />
+  <input type="hidden" name="redirect_uri" value="http://127.0.0.1:8888" />
+  <input type="hidden" name="scope" value="streaming user-read-email user-modify-playback-state user-read-private" />
+  <input type="hidden" name="show_dialog" value="true" />
+
+  <button type="submit" class="btn btn-primary btn-sm">Get Your Web Playback SDK Access Token</button>
+</form> -->
+
+</body>
+</html>
