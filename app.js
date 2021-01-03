@@ -24,12 +24,14 @@ var cookieParser = require('cookie-parser');
 
 //use jsdom to use jquery
 var jsdom = require('jsdom');
+const { data } = require('jquery');
 const { JSDOM } = jsdom;
 const { window } = new JSDOM();
 const { document } = (new JSDOM('')).window;
 global.document = document;
 
 var $ = jQuery = require('jquery')(window);
+
 
 var client_id = '8c5ec548a1b54161a9dc2df93984bd46'; // my client id
 // var client_id = '2102d6bf57714410a8f50dd1ccadc571';    // glitch client id
@@ -210,6 +212,7 @@ app.get('/callback', function (req, res) {
 });
 
 app.get('/playback', function (req, res) {
+
     var authOptions = {
         url: 'https://accounts.spotify.com/api/token',
         headers: { 'Authorization': 'Basic ' + (new Buffer.from(client_id + ':' + client_secret).toString('base64')) },
