@@ -49,6 +49,7 @@
             <dt>Profile Image</dt><dd class="clearfix"><a href="{{images.0.url}}">{{images.0.url}}</a></dd>
             <dt>Country</dt><dd>{{country}}</dd>
           </dl>
+          <button type="button" id="playback" onclick="playSong()">Play a random song</button>
         </div>
       </div>
     </script>
@@ -64,10 +65,10 @@
   <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.1/handlebars.min.js"></script>
   <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
   <script src="https://sdk.scdn.co/spotify-player.js"></script>
-  <script src="../app.js" defer></script>
   <script src="playURI.js" defer></script>
 
   <script>
+    /*
     // Get the hash of the url
       // const hash = window.location.hash
       //   .substring(1)
@@ -100,12 +101,15 @@
       // if (!_token) {
       //   window.location = `${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join('%20')}&response_type=token&show_dialog=true`;
       // }
+      */
+      var access_token = '';
         (function () {
 
           /**
            * Obtains parameters from the hash of the URL
            * @return Object
            */
+      
           function getHashParams() {
             var hashParams = {};
             var e, r = /([^&;=]+)=?([^&;]*)/g,
@@ -126,7 +130,7 @@
 
           var params = getHashParams();
 
-          var access_token = params.access_token,
+          access_token = params.access_token,
             refresh_token = params.refresh_token,
             error = params.error;
 
@@ -196,29 +200,69 @@
           $('#current-track-name').text(state.track_window.current_track.name);
         });
 
-        function play(device_id) {
-          $.ajax({
-            url: "https://api.spotify.com/v1/me/player/play?device_id=" + device_id,
-            type: "PUT",
-            // data: '{"uris": ["spotify:track:5ya2gsaIhTkAuWYEMB0nw5"]}',
-            data: '{"uris": ["spotify:track:3OaunNUlXXs5e2PXtNAzzG"]}',
-            beforeSend: function (xhr) { xhr.setRequestHeader('Authorization', 'Bearer ' + _token); },
-            success: function (data) {
-              console.log(data)
-            }
-          });
-        }
+        var uris = [];
+        fetch('http://localhost:8888/playback')
+          .then(spotify_uri => {
+            console.log('in fetch', spotify_uri, );
+            uris.push(spotify_uri);
+          })
+        /*
+        // function play(device_id) {
+        //   $.ajax({
+        //     url: "https://api.spotify.com/v1/me/player/play?device_id=" + device_id,
+        //     type: "PUT",
+        //     // data: '{"uris": ["spotify:track:5ya2gsaIhTkAuWYEMB0nw5"]}',
+        //     data: '{"uris": uris}',
+        //     beforeSend: function (xhr) { xhr.setRequestHeader('Authorization', 'Bearer ' + access_token); },
+        //     success: function (data) {
+        //       console.log(data)
+        //     }
+        //   });
+        // }
         
-        // Ready
-        player.on('ready', data => {
-          console.log('Ready with Device ID', data.device_id);
+        // // Ready
+        // player.on('ready', data => {
+        //   console.log('Ready with Device ID', data.device_id);
 
-          // Play a track using our new device ID
-          play(data.device_id);
-        });
-
+        //   // Play a track using our new device ID
+        //   // play(data.device_id);
+        // });
+        */
+        const play = ({
+          spotify_uri,
+          playerInstance: {
+            _options: {
+              getOAuthToken,
+              id
+            }
+          }
+        }) => {
+          console.log('access_token on index.html:239 is', access_token, '\n');
+          console.log('spotify_uri is: ', spotify_uri, '\n');
+          console.log('uris is: ', uris, '\n');
+          getOAuthToken(access_token => {
+            fetch(`https://api.spotify.com/v1/me/player/play?device_id=${id}`, {
+              method: 'PUT',
+              body: JSON.stringify({ uris: [spotify_uri] }),
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${access_token}`
+              },
+            });
+          });
+        };
         // Connect to the player!
         player.connect();
+        
+        console.log('in playback SDK access_token is:', access_token);
+        play({
+          playerInstance: new Spotify.Player({
+            name: 'Web Playback SDK Template',
+            getOAuthToken: cb => { cb(access_token); }
+          }),
+          // spotify_uri: uris[0],
+          spotify_uri: 'spotify:track:6XHVuErjQ4XNm6nDPVCxVX',
+        });
       }
       
   </script>
