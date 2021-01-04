@@ -4,7 +4,8 @@
   "description": "Plays a random song from Spotify",
   "main": "works/app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "node spotify/spotify_main.js"
   },
   "repository": {
     "type": "git",
