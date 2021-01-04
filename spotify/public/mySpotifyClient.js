@@ -21,21 +21,19 @@ const play = ({
     });
 };
 
-function playSafe(spotify_uri)
-{
-    if(spotifyPlayerParams.sdkInit == false)
-    {
+function playSafe(spotify_uri) {
+    if (spotifyPlayerParams.sdkInit == false) {
         initializeSpotifyPlayer();
     }
-    if (spotifyPlayerParams.playerReady == true)
-    {
-        play({spotify_uri: spotify_uri,
-            playerInstance: player});
+    if (spotifyPlayerParams.playerReady == true) {
+        play({
+            spotify_uri: spotify_uri,
+            playerInstance: player
+        });
     }
 }
 
-async function playRandomSong()
-{
+async function playRandomSong() {
     var song = await getRandomSong();
     playSafe(song);
 }
@@ -57,8 +55,7 @@ var auth = {
     json: true,
 };
 
-async function getAccessToken ()
-{
+async function getAccessToken() {
     var authUrl = new URL(auth.url);
     authUrl.search = new URLSearchParams(auth.qs).toString();
     var response = await fetch(authUrl, {
@@ -81,7 +78,7 @@ function getRandomSearch() {
     const characters = 'abcdefghijklmnopqrstuvwxyz';
 
     // Gets a random character from the characters string.
-    const randomCharacter = characters.charAt(Math.floor(Math.random() * characters.length));
+    const randomCharacter = characters.charAt(Math.floor(Math.random() * characters.length)) + characters.charAt(Math.floor(Math.random() * characters.length));
     let randomSearch = '';
 
     // Places the wildcard character at the beginning, or both beginning and end, randomly.
@@ -109,7 +106,7 @@ var search = {
 };
 
 
-async function getRandomSong(){
+async function getRandomSong() {
     search.qs.q = String(getRandomSearch());
     let spotify_uri = '';
     var searchURL = new URL(search.url);
@@ -122,7 +119,7 @@ async function getRandomSong(){
         },
         // request.get(search, function (error, response, body) {
         //     // console.log(body);
-        //console.log('track is: ', body.tracks.items[0].uri);
+        //      console.log('track is: ', body.tracks.items[0].uri);
         //     spotify_uri = body.tracks.items[0].uri;
         //     console.log('error is: ', error);
         //     // console.log(response);
@@ -147,8 +144,7 @@ async function getRandomSong(){
 }
 
 
-function getURLParam(paramName)
-{
+function getURLParam(paramName) {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const param = urlParams.get(param);
@@ -162,9 +158,8 @@ var spotifyPlayerParams =
     sdkInit: false,
 }
 
-function initializeSpotifyPlayer(){
-    if (spotifyPlayerParams.sdkReady == false)
-    {
+function initializeSpotifyPlayer() {
+    if (spotifyPlayerParams.sdkReady == false) {
         console.log("SDK not ready");
         return;
     }
