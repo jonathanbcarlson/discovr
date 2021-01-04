@@ -5,7 +5,7 @@
   "main": "works/app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "node spotify/spotify_main.js"
+    "build": "node spotify_main.js"
   },
   "repository": {
     "type": "git",
