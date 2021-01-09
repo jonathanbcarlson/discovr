@@ -164,7 +164,7 @@ function initializeSpotifyPlayer() {
         return;
     }
     player = new Spotify.Player({
-        name: 'Web Playback SDK Quick Start Player',
+        name: 'DisCovr Player',
         getOAuthToken: cb => { cb(access_token); }
     });
 
