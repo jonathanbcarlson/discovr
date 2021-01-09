@@ -1,9 +1,8 @@
 const express = require('express')
 //const cookieParsere = require('cookie-parser');
 const app = express()
-const port = 8888
-const spotifyId = '4934dfba9b1f4124918b14b0c038088a'
-const spotifySecret = 'cb33806f47844ad1b1271830f04ff58b'
+// const port = 8888
+const port = process.env.PORT || 80;
 
 app.use(express.static(__dirname + '/public'));
 
